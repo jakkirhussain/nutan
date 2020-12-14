@@ -1,0 +1,63 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.current {
+  border: 1px solid purple !important;
+  color: purple;
+  font-weight: bold;
+  background-color: #ccc;
+  width: 240px !important;
+  box-sizing: border-box;
+}
+
+.carousel-container {
+  width: 640px;
+  height: 200px;
+  border: 1px solid;
+  display: flex;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.carousel-container-inner {
+  position: relative;
+  left: left + px;
+  display: flex;
+  transition: left 2s;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid grey;
+  box-sizing: border-box;
+  width: 200px;
+  transition: color 2s, fontWeight 2s, border 2s, backgroundColor 2s;
+}
+
+.item img {
+  width: 198px;
+  height: 120px;
+  align-self: center;
+}
+
+.info {
+  padding: 0 22px;
+  line-height: 1.2rem;
+  padding: 0 22px;
+  margin-top: 10px;
+}
+.filter {
+  margin: 40px;
+}
+
+.right-arrow img,
+.left-arrow img {
+  width: 30px;
+  cursor: pointer;
+  padding: 10px;
+}

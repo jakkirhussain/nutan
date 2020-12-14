@@ -1,107 +1,172 @@
-import logo from './logo.svg';
-import './App.css';
-import { useState } from 'react';
+import logo from "./logo.svg";
+import "./App.css";
+import React, { useState } from "react";
+
+let Originalitems = [
+  {
+    id: 1,
+    name: "Basics",
+    price: "100$",
+    category: "Shirt",
+    image: "./no-image.png",
+  },
+  {
+    id: 2,
+    name: "BlueBerry",
+    price: "200$",
+    category: "Shirt",
+    image: "./no-image.png",
+  },
+  {
+    id: 3,
+    name: "BlackBerry",
+    price: "100$",
+    category: "Shirt",
+    image: "./no-image.png",
+  },
+  {
+    id: 4,
+    name: "Tommy Hilfiguer",
+    price: "500$",
+    category: "Shirt",
+    image: "./no-image.pn",
+  },
+  {
+    id: 5,
+    name: "RiG",
+    price: "100$",
+    category: "Trouser",
+    image: "./no-image.png",
+  },
+  {
+    id: 6,
+    name: "US Polo",
+    price: "600$",
+    category: "Trouser",
+    image: "./no-image.png",
+  },
+  {
+    id: 7,
+    name: "Sin",
+    price: "700$",
+    category: "Trouser",
+    image: "./no-image.png",
+  },
+  {
+    id: 8,
+    name: "Levis",
+    price: "300$",
+    category: "Trouser",
+    image: "./no-image.png",
+  },
+  {
+    id: 9,
+    name: "Grasim",
+    price: "100$",
+    category: "Tie",
+    image: "./no-image.png",
+  },
+  {
+    id: 10,
+    name: "Basics",
+    price: "50$",
+    category: "Tie",
+    image: "./no-image.png",
+  },
+];
+
+const category = ["Shirt", "Trouser", "Tie"];
 
 function App() {
+  let [left, setLeft] = useState(0);
+  let [current, setCurrent] = useState(1);
+  let [items, setItems] = useState(Originalitems);
+  let [filter, setFilter] = useState("");
 
+  const total = items.length;
 
-
-    let [map,setMap] = useState(new Map());
-    let [text,setText] = useState("");
-    let [bool,setBool] = useState(false)
-    
-    const populateInMap = (text)=>{
-      text = text.replace(/[^a-zA-Z ]/g,"")
-      let arr = text.split(/\s+/);
-      for(let tag of arr){
-        map.set(tag, map.get(tag) ?  map.get(tag)+1 : 1);
-      }
-      
-      setMap(map);
-      setBool(!bool)
+  const moveLeft = () => {
+    if (current > 1) {
+      setCurrent(current - 1);
+      setLeft(left + 200);
     }
+  };
 
-   const disPlayTag = ()=>{
-    
-        
-       
-        let sum = Array.from(map.values()).reduce((sum,val)=>{
+  const moveRight = () => {
+    if (current < total - 2) {
+      setCurrent(current + 1);
+      setLeft(left - 200);
+    }
+  };
 
-            sum = sum+val;
-            return sum;
-        },0)
-        
-        let array = Array.from(map, ([name, value]) => ({ name, value ,frequency : (value/sum)*100}))
-        if(array.length){
-       
-        array.sort((a,b)=>{
-              if(a.value > b.value){
-                return -1
-              } else if(a.value < b.value){
-                return 1
-              }
-              return 0;
-        });
-
-        
-        
-        let max = array[array.length-1]["frequency"];
-        
-       let finalArray = array.map((obj,index)=>{
-        let fontSize = parseInt(obj.frequency);
-       
-
-        if(max < 10){
-          fontSize = fontSize*10;
-        }
-
-        if(fontSize < 10){
-          fontSize = 10;
-        }
-
-        
-
-         return ( <div key={obj.frequency} style={{margin:"10px"}}>
-            <span style={{fontSize:fontSize+"px"}}>{obj.name}</span>
-           
-          </div>
-         )
-       })
-
-       
-
-       return finalArray;
-      } else {
-        return null
-      }
-   }
-
-
-   const textHandler = ()=>{
-     
-    populateInMap(text)
-   }
-
+  const handleChange = (event) => {
+    let filteredItems = Originalitems.filter((item) => {
+      return item.category == event.target.value;
+    });
+    setFilter(event.target.value);
+    setItems(filteredItems);
+  };
 
   return (
-    <div className="App" style={{margin:"20px"}}>
-        <h2>Tag : </h2>
-        <form style={{padding:"20px"}}> 
-          <div style={{display:"flex",alignItems:"center",justifyContent: "center",marginTop:"20px"}}>
-        <label>Text : </label>
-        <textarea id="tag" name="tag" name="tag" cols="100" rows="20"  defaultValue="" onChange={(e)=>{setText(e.target.value)}}/> 
+    <>
+      <div className="container">
+        <div className="filter">
+          <label>Filter : </label>
+          <select value={filter} onChange={handleChange}>
+            <option value="select">Select</option>
+            {category.map((elem) => {
+              return (
+                <option key={elem} value={elem}>
+                  {elem}
+                </option>
+              );
+            })}
+          </select>
         </div>
-        <div style={{display:"flex",alignItems:"center",justifyContent: "center",marginTop:"20px"}}>
-        <div></div>
-        <input type="button" name="add" value="Add" onClick={(e)=>{textHandler()}} style={{minWidth:"100px",padding:"20px",background:"blue",color:"#fff"}}/>
+      </div>
+      <div className="container">
+        <div className="left-arrow">
+          <img src="./left-arrow.png" alt="move left" onClick={moveLeft} />
         </div>
-        </form>
-        <div style={{display:"flex",justifyContent: "center",marginBottom:"20px"}}>
-        <div id="display" style={{display:"flex",alignItems:"strech",justifyContent: "center",marginTop:"20px",flexWrap:"wrap",width:"500px",height:"300px"}}>
-              {disPlayTag()}
+        <div className="carousel-container" aria-label="product">
+          <div
+            className="carousel-container-inner"
+            style={{
+              left: left + "px",
+            }}
+          >
+            {items.map((item, index) => {
+              let curClassName = current === index ? " current" : "";
+
+              return (
+                <div
+                  className="item"
+                  className={"item" + curClassName}
+                  key={item.id}
+                  aria-label={`item${index}`}
+                >
+                  <img src="./no-image.png" alt="" />
+                  <div className="info">
+                    <div className="name">{item.name}</div>
+                    <div className="price">
+                      <span>Price: </span>
+                      <span>{item.price}</span>
+                    </div>
+                    <div className="category">
+                      <span>Category: </span>
+                      <span>{item.category}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
+        <div className="right-arrow">
+          <img src="./right-arrow.png" alt="move right" onClick={moveRight} />
         </div>
-        </div>
+      </div>
+    </>
   );
 }
 
